@@ -22,8 +22,8 @@ export default function Header() {
         <div className="flex justify-between items-center h-20">
           {/* Logo / Brand Name */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="font-heading font-bold text-2xl tracking-tight text-slate-900">
-              LYDIA<span className="text-teal-600">PAINTING</span>
+            <span className="font-heading font-bold text-2xl tracking-tight text-brand-navy uppercase">
+              Lydia<span className="text-brand-orange ml-1">Painting</span>
             </span>
           </Link>
 
@@ -33,7 +33,7 @@ export default function Header() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="font-sans text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors"
+                className="font-sans text-sm font-medium text-slate-600 hover:text-brand-orange transition-colors"
               >
                 {link.name}
               </Link>
@@ -42,7 +42,7 @@ export default function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 text-slate-600 hover:text-teal-600 transition-colors"
+            className="md:hidden p-2 text-slate-600 hover:text-brand-orange transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -66,7 +66,7 @@ export default function Header() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="font-sans text-lg font-medium text-slate-800 hover:text-teal-600 transition-colors"
+                  className="font-sans text-lg font-medium text-slate-800 hover:text-brand-orange transition-colors"
                 >
                   {link.name}
                 </Link>

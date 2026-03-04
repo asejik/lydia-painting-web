@@ -5,17 +5,16 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  /* Brand color palette - Professional, calm, and grounded */
-  --color-brand-50: #f0fdfa;
-  --color-brand-100: #ccfbf1;
-  --color-brand-500: #14b8a6; /* Teal accent for eco-friendly focus */
-  --color-brand-900: #134e4a;
+  /* Lydia Painting True Brand Colors */
+  --color-brand-navy: #0a1f35; /* Deep, professional blue from the logo background */
+  --color-brand-orange: #f26e22; /* Vibrant paint roller orange */
+  --color-brand-orange-hover: #d95e1a; /* Slightly darker for button hovers */
 }
 
 /* Base custom utility classes */
 @layer utilities {
   .glass-panel {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+    @apply bg-white/80 backdrop-blur-lg border border-white/40 shadow-xl;
   }
 
   .text-balance {
