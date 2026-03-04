@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
-// Configure highly optimized, self-hosted fonts via Next.js
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -28,13 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-slate-50 text-slate-900 selection:bg-slate-900 selection:text-white flex flex-col min-h-screen`}
+        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-slate-50 text-slate-900 selection:bg-teal-900 selection:text-white flex flex-col min-h-screen`}
       >
-        {/* We will inject Header here in Step 4 */}
-        <main className="flex-grow">
+        <Header />
+        <main className="flex-grow pt-20">
           {children}
         </main>
-        {/* We will inject Footer here in Step 4 */}
+        <Footer />
       </body>
     </html>
   );
