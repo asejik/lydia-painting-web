@@ -1,10 +1,13 @@
 import Hero from "@/components/sections/Hero";
+import TrustIndicators from "@/components/sections/TrustIndicators";
+import Capabilities from "@/components/sections/Capabilities";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Hero />
-      {/* Additional sections (Capabilities, Trust Indicators, etc.) will go here in future steps */}
+      <TrustIndicators />
+      <Capabilities />
     </div>
   );
 }
