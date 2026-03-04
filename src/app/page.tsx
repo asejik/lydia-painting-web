@@ -1,6 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import TrustIndicators from "@/components/sections/TrustIndicators";
 import Capabilities from "@/components/sections/Capabilities";
+import Services from "@/components/sections/Services";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <TrustIndicators />
       <Capabilities />
+      <Services />
     </div>
   );
 }
