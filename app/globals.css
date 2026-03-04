@@ -1,3 +1,24 @@
 @import "tailwindcss";
 
-/* We will add our brand theme variables here later */
+@theme {
+  /* Map our Next.js font variables to Tailwind utility classes */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand color palette - Professional, calm, and grounded */
+  --color-brand-50: #f0fdfa;
+  --color-brand-100: #ccfbf1;
+  --color-brand-500: #14b8a6; /* Teal accent for eco-friendly focus */
+  --color-brand-900: #134e4a;
+}
+
+/* Base custom utility classes */
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
