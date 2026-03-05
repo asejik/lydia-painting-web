@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 import { collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { LogOut, Plus, LayoutGrid, Edit, Trash2, Loader2, Image as ImageIcon } from "lucide-react";
+import { LogOut, Plus, LayoutGrid, Edit, Trash2, Loader2, Star, X, UploadCloud } from "lucide-react";
 import Modal from "@/components/ui/Modal";
 import { Project } from "@/types";
 
@@ -22,16 +22,27 @@ export default function AdminDashboard() {
 
   // Form Fields
   const [formData, setFormData] = useState({ name: "", location: "", description: "" });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  // Advanced Image State
+  const [existingGallery, setExistingGallery] = useState<string[]>([]);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [featuredImage, setFeaturedImage] = useState<string>(""); // Holds URL or File.name
 
   useEffect(() => {
-    // Real-time listener for projects
     const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const projectsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Project[];
+      const projectsData = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name,
+          location: data.location,
+          description: data.description,
+          // Fallback support for old singular 'imageUrl' schema during migration
+          featuredImage: data.featuredImage || data.imageUrl || "",
+          gallery: data.gallery || (data.imageUrl ? [data.imageUrl] : []),
+        };
+      }) as Project[];
       setProjects(projectsData);
       setIsLoading(false);
     });
@@ -51,19 +62,50 @@ export default function AdminDashboard() {
     if (project) {
       setCurrentProject(project);
       setFormData({ name: project.name, location: project.location, description: project.description });
+      setExistingGallery(project.gallery || []);
+      setFeaturedImage(project.featuredImage || project.gallery[0] || "");
     } else {
       setCurrentProject(null);
       setFormData({ name: "", location: "", description: "" });
+      setExistingGallery([]);
+      setFeaturedImage("");
     }
-    setImageFile(null);
+    setNewFiles([]);
     setIsModalOpen(true);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selected = Array.from(e.target.files);
+      setNewFiles(prev => [...prev, ...selected]);
+
+      // Auto-set featured image if it's the very first image added
+      if (!featuredImage && existingGallery.length === 0 && selected.length > 0) {
+        setFeaturedImage(selected[0].name);
+      }
+    }
+  };
+
+  const removeExistingImage = (urlToRemove: string) => {
+    const updated = existingGallery.filter(url => url !== urlToRemove);
+    setExistingGallery(updated);
+    if (featuredImage === urlToRemove) {
+      setFeaturedImage(updated.length > 0 ? updated[0] : (newFiles.length > 0 ? newFiles[0].name : ""));
+    }
+  };
+
+  const removeNewFile = (fileToRemove: File) => {
+    const updated = newFiles.filter(f => f.name !== fileToRemove.name);
+    setNewFiles(updated);
+    if (featuredImage === fileToRemove.name) {
+      setFeaturedImage(existingGallery.length > 0 ? existingGallery[0] : (updated.length > 0 ? updated[0].name : ""));
+    }
   };
 
   const uploadToCloudinary = async (file: File) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-
     const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
       method: "POST",
       body: data,
@@ -74,28 +116,47 @@ export default function AdminDashboard() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (existingGallery.length === 0 && newFiles.length === 0) {
+      alert("Please add at least one image to the gallery.");
+      return;
+    }
+
     setIsSaving(true);
-
     try {
-      let imageUrl = currentProject?.imageUrl || "";
+      const uploadedUrls: string[] = [];
+      let finalFeaturedUrl = featuredImage;
 
-      // Upload new image if selected
-      if (imageFile) {
-        imageUrl = await uploadToCloudinary(imageFile);
+      // 1. Upload new files sequentially
+      for (const file of newFiles) {
+        const url = await uploadToCloudinary(file);
+        uploadedUrls.push(url);
+        // If this file was marked as featured by its name, assign the real URL
+        if (featuredImage === file.name) {
+          finalFeaturedUrl = url;
+        }
       }
 
+      // 2. Combine galleries
+      const finalGallery = [...existingGallery, ...uploadedUrls];
+
+      // 3. Fallback check for featured image
+      if (!finalFeaturedUrl || !finalGallery.includes(finalFeaturedUrl)) {
+        finalFeaturedUrl = finalGallery[0];
+      }
+
+      const projectData = {
+        name: formData.name,
+        location: formData.location,
+        description: formData.description,
+        featuredImage: finalFeaturedUrl,
+        gallery: finalGallery,
+      };
+
       if (currentProject?.id) {
-        // Update
-        await updateDoc(doc(db, "projects", currentProject.id), {
-          ...formData,
-          imageUrl,
-        });
+        await updateDoc(doc(db, "projects", currentProject.id), projectData);
       } else {
-        // Create
-        if (!imageUrl) throw new Error("Image is required for new projects.");
         await addDoc(collection(db, "projects"), {
-          ...formData,
-          imageUrl,
+          ...projectData,
           createdAt: serverTimestamp(),
         });
       }
@@ -103,7 +164,7 @@ export default function AdminDashboard() {
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error saving project:", error);
-      alert("Failed to save project. Ensure your image is selected and environment variables are set.");
+      alert("Failed to save project. Ensure environment variables are correct.");
     } finally {
       setIsSaving(false);
     }
@@ -134,9 +195,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <span className="font-heading font-bold text-xl tracking-tight text-brand-navy uppercase">
-                Lydia<span className="text-brand-orange ml-1">Painting</span>
-              </span>
+              <span className="font-heading font-bold text-xl tracking-tight text-brand-navy uppercase">Lydia<span className="text-brand-orange ml-1">Painting</span></span>
               <span className="ml-3 px-2.5 py-1 rounded-md bg-brand-navy/5 text-brand-navy text-xs font-semibold uppercase tracking-wider hidden sm:block">Admin Portal</span>
             </div>
             <button onClick={handleLogout} className="flex items-center text-sm font-sans font-medium text-slate-600 hover:text-red-600 transition-colors">
@@ -171,8 +230,11 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <div key={project.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-48 overflow-hidden bg-slate-100 relative">
-                  <img src={project.imageUrl} alt={project.name} className="w-full h-full object-cover" />
+                <div className="h-48 overflow-hidden bg-slate-100 relative group">
+                  <img src={project.featuredImage} alt={project.name} className="w-full h-full object-cover" />
+                  <div className="absolute top-2 right-2 bg-brand-navy/80 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                    {project.gallery?.length || 1} Images
+                  </div>
                 </div>
                 <div className="p-5">
                   <h4 className="font-heading font-bold text-lg text-brand-navy mb-1">{project.name}</h4>
@@ -194,7 +256,7 @@ export default function AdminDashboard() {
 
       {/* Add / Edit Modal */}
       <Modal isOpen={isModalOpen} onClose={() => !isSaving && setIsModalOpen(false)} title={currentProject ? "Edit Project" : "Add New Project"}>
-        <form onSubmit={handleSave} className="space-y-4">
+        <form onSubmit={handleSave} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
             <input required type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="Downtown Hotel" />
@@ -207,14 +269,58 @@ export default function AdminDashboard() {
             <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
             <textarea required rows={3} value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none" placeholder="Details about the work..." />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">High-Res Image {currentProject && "(Leave empty to keep current)"}</label>
-            <input type="file" accept="image/*" required={!currentProject} onChange={(e) => setImageFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-orange/10 file:text-brand-orange hover:file:bg-brand-orange/20 cursor-pointer" />
+
+          {/* Image Gallery Uploader */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-slate-700">Project Gallery</label>
+              <span className="text-xs text-slate-500">Click the star to set cover image</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {/* Existing Images */}
+              {existingGallery.map((url, idx) => (
+                <div key={`old-${idx}`} className={`relative group h-24 rounded-lg overflow-hidden border-2 ${featuredImage === url ? 'border-brand-orange' : 'border-slate-200'}`}>
+                  <img src={url} alt="Gallery item" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-brand-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button type="button" onClick={() => setFeaturedImage(url)} className="p-1.5 bg-white text-brand-orange rounded-full hover:scale-110 transition-transform" title="Set as Featured">
+                      <Star className={`w-4 h-4 ${featuredImage === url ? 'fill-current' : ''}`} />
+                    </button>
+                    <button type="button" onClick={() => removeExistingImage(url)} className="p-1.5 bg-white text-red-500 rounded-full hover:scale-110 transition-transform" title="Remove">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {/* New Files Pending Upload */}
+              {newFiles.map((file, idx) => (
+                <div key={`new-${idx}`} className={`relative group h-24 rounded-lg overflow-hidden border-2 ${featuredImage === file.name ? 'border-brand-orange' : 'border-slate-200'}`}>
+                  <img src={URL.createObjectURL(file)} alt="Pending upload" className="w-full h-full object-cover opacity-80" />
+                  <div className="absolute inset-0 bg-brand-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button type="button" onClick={() => setFeaturedImage(file.name)} className="p-1.5 bg-white text-brand-orange rounded-full hover:scale-110 transition-transform" title="Set as Featured">
+                      <Star className={`w-4 h-4 ${featuredImage === file.name ? 'fill-current' : ''}`} />
+                    </button>
+                    <button type="button" onClick={() => removeNewFile(file)} className="p-1.5 bg-white text-red-500 rounded-full hover:scale-110 transition-transform" title="Remove">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {/* Upload Button */}
+              <label className="h-24 border-2 border-dashed border-slate-300 hover:border-brand-orange hover:bg-brand-orange/5 rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
+                <UploadCloud className="w-6 h-6 text-slate-400 mb-1" />
+                <span className="text-xs font-medium text-slate-500">Add Photos</span>
+                <input type="file" multiple accept="image/*" onChange={handleFileSelect} className="hidden" />
+              </label>
+            </div>
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+
+          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
             <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
             <button type="submit" disabled={isSaving} className="px-5 py-2.5 text-sm font-medium text-white bg-brand-orange hover:bg-brand-orange-hover rounded-lg transition-colors disabled:opacity-70 flex items-center">
-              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : "Save Project"}
+              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading & Saving...</> : "Save Project"}
             </button>
           </div>
         </form>

@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   location: string;
   description: string;
-  imageUrl: string;
+  featuredImage: string;
+  gallery: string[];
   createdAt?: any;
 }
