@@ -12,7 +12,7 @@ export default function Home() {
       <TrustIndicators />
       <Capabilities />
       <Services />
-      <Projects />
+      <Projects limitDisplay={3} />
       <Contact />
     </div>
   );
