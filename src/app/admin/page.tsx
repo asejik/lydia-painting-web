@@ -3,7 +3,7 @@
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { LogOut, Plus, Image as ImageIcon, LayoutGrid } from "lucide-react";
+import { LogOut, Plus, LayoutGrid } from "lucide-react";
 
 export default function AdminDashboard() {
   const router = useRouter();
