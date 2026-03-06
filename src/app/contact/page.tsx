@@ -1,5 +1,6 @@
 import PageHeader from "@/components/layout/PageHeader";
 import Contact from "@/components/sections/Contact";
+import Map from "@/components/sections/Map";
 
 export const metadata = {
   title: "Contact Us | Lydia Painting",
@@ -15,6 +16,7 @@ export default function ContactPage() {
         bgImage="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=2000&auto=format&fit=crop"
       />
       <Contact />
+      <Map />
     </div>
   );
 }
