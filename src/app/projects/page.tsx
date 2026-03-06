@@ -12,6 +12,7 @@ export default function ProjectsPage() {
       <PageHeader
         title="Project Portfolio"
         description="A showcase of our masterfully beautified landmarks. We don't just meet expectations; we redefine them."
+        bgImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop"
       />
       <Projects />
     </div>

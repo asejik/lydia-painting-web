@@ -12,6 +12,7 @@ export default function ServicesPage() {
       <PageHeader
         title="Our Services"
         description="From full-service interior and exterior painting to specialized industrial coatings, we possess the expertise to handle projects of any scale and complexity."
+        bgImage="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2000&auto=format&fit=crop"
       />
       <Services />
     </div>

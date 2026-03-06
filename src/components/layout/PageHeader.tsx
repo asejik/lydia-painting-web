@@ -5,11 +5,27 @@ import { motion } from "framer-motion";
 interface PageHeaderProps {
   title: string;
   description: string;
+  bgImage?: string;
 }
 
-export default function PageHeader({ title, description }: PageHeaderProps) {
+export default function PageHeader({ title, description, bgImage }: PageHeaderProps) {
   return (
     <div className="bg-brand-navy pt-32 pb-20 relative overflow-hidden border-b border-brand-orange/20">
+
+      {/* Dynamic Background Image & Overlay */}
+      {bgImage && (
+        <div className="absolute inset-0 z-0">
+          <img
+            src={bgImage}
+            alt={`${title} background`}
+            className="w-full h-full object-cover"
+          />
+          {/* Heavy navy overlay to ensure text legibility and brand consistency */}
+          <div className="absolute inset-0 bg-brand-navy/85" />
+        </div>
+      )}
+
+      {/* Ambient Motion Blob */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
@@ -17,6 +33,8 @@ export default function PageHeader({ title, description }: PageHeaderProps) {
           className="absolute top-[-50%] right-[-10%] w-[50vw] h-[50vw] bg-brand-orange/20 rounded-full blur-[100px]"
         />
       </div>
+
+      {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
