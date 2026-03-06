@@ -7,6 +7,7 @@ import Link from "next/link";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Project } from "@/types";
+import Modal from "@/components/ui/Modal"; // Importing our custom Modal
 
 interface ProjectsProps {
   limitDisplay?: number;
@@ -33,12 +34,15 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Modal State
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         let q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
 
-        // If a limit is passed, restrict the query size
         if (limitDisplay) {
           q = query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(limitDisplay));
         }
@@ -52,7 +56,7 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
             location: data.location,
             description: data.description,
             featuredImage: data.featuredImage || data.imageUrl || "",
-            gallery: data.gallery || [],
+            gallery: data.gallery || (data.imageUrl ? [data.imageUrl] : []),
           };
         }) as Project[];
 
@@ -66,6 +70,11 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
 
     fetchProjects();
   }, [limitDisplay]);
+
+  const openProjectDetails = (project: Project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
 
   return (
     <section className="py-24 bg-slate-50 border-t border-slate-200">
@@ -94,7 +103,6 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
             </motion.h3>
           </div>
 
-          {/* Only show the "View Full Portfolio" link if we are limiting the display (i.e. on the Homepage) */}
           {limitDisplay && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -137,7 +145,8 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
               <motion.div
                 key={project.id}
                 variants={cardVariants}
-                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200"
+                onClick={() => openProjectDetails(project)}
+                className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200"
               >
                 <div className="relative h-64 overflow-hidden bg-slate-200">
                   <img
@@ -145,11 +154,15 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
                     alt={project.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-brand-navy/10 group-hover:bg-transparent transition-colors duration-500" />
+                  {/* Subtle overlay hint */}
+                  <div className="absolute inset-0 bg-brand-navy/10 group-hover:bg-brand-navy/30 transition-colors duration-500 flex items-center justify-center">
+                     <span className="opacity-0 group-hover:opacity-100 text-white font-sans font-medium tracking-wide transition-opacity duration-300 bg-brand-orange/90 px-4 py-2 rounded-lg backdrop-blur-sm">
+                        View Gallery
+                     </span>
+                  </div>
 
-                  {/* Gallery Count Badge */}
                   {project.gallery && project.gallery.length > 1 && (
-                    <div className="absolute top-4 right-4 bg-brand-navy/80 text-white text-xs font-semibold px-2.5 py-1 rounded backdrop-blur-sm shadow-md">
+                    <div className="absolute top-4 right-4 bg-brand-navy/90 text-white text-xs font-semibold px-2.5 py-1 rounded backdrop-blur-sm shadow-md z-10">
                       {project.gallery.length} Images
                     </div>
                   )}
@@ -164,7 +177,7 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
                     {project.name}
                   </h4>
                   <p className="font-sans text-sm text-slate-600 line-clamp-3 leading-relaxed">
-                    {project.description}
+                    {project.description || "No description provided."}
                   </p>
                 </div>
               </motion.div>
@@ -173,6 +186,54 @@ export default function Projects({ limitDisplay }: ProjectsProps) {
         )}
 
       </div>
+
+      {/* Public Project Details Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={selectedProject?.name || "Project Details"}
+      >
+        {selectedProject && (
+          <div className="space-y-6 pb-2">
+            <div className="flex items-center text-slate-500 text-sm font-sans">
+              <MapPin className="w-4 h-4 mr-1 text-brand-orange" />
+              {selectedProject.location}
+            </div>
+
+            {selectedProject.description && (
+              <p className="font-sans text-slate-700 leading-relaxed whitespace-pre-wrap">
+                {selectedProject.description}
+              </p>
+            )}
+
+            {selectedProject.gallery && selectedProject.gallery.length > 0 && (
+              <div className="pt-6 border-t border-slate-100">
+                <h4 className="text-sm font-sans font-bold tracking-wider text-brand-orange uppercase mb-4">
+                  Project Gallery
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {selectedProject.gallery.map((img, idx) => (
+                    <a
+                      key={idx}
+                      href={img}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative h-48 sm:h-56 rounded-xl overflow-hidden bg-slate-100 group shadow-sm hover:shadow-md transition-shadow cursor-pointer block"
+                    >
+                      <img
+                        src={img}
+                        alt={`${selectedProject.name} - Gallery Image ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
+
     </section>
   );
 }
