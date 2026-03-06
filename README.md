@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+```markdown
+# Lydia Painting Website & Admin Portal
 
-## Getting Started
+A premium, high-performance web application built for Lydia Painting, a veteran and minority-owned gold standard commercial painting company based in Farmers Branch, Texas.
 
-First, run the development server:
+This project serves as both a public-facing lead generation portfolio and a secure, authenticated Admin Dashboard for managing project galleries dynamically.
+
+**Live Site:** [https://www.lydiapainting.org](https://www.lydiapainting.org)
+
+## Tech Stack
+
+* **Frontend Framework:** Next.js (App Router, Server-Side Rendering)
+* **Styling:** Tailwind CSS v4
+* **Animations:** Framer Motion (Scroll reveals, ambient gradients, micro-interactions)
+* **Database:** Firebase Firestore (NoSQL document database)
+* **Authentication:** Firebase Auth (Email/Password)
+* **Image Hosting:** Cloudinary (Unsigned client-side uploads)
+* **Lead Routing:** Self-hosted n8n Webhook to SMTP Email
+* **Hosting/Deployment:** Vercel
+
+## Core Features
+
+* **Dynamic Project Portfolio:** A responsive masonry-style grid that fetches live project data from Firestore.
+* **Interactive Gallery Modals:** Custom-built, accessible modals (avoiding native browser popups) that display full project descriptions and multi-image galleries.
+* **Secure Admin Dashboard:** A protected route (`/admin`) requiring Firebase authentication. Allows authorized users to Create, Read, Update, and Delete (CRUD) projects.
+* **Cloudinary Integration:** Direct-to-cloud unsigned image uploads from the Admin Dashboard, generating optimized URLs for the database.
+* **Automated Lead Generation:** A custom contact form that posts data to an n8n webhook, which parses the JSON payload and automatically fires a formatted HTML email to the company inbox.
+* **Premium UI/UX:** Features include an animated gradient hero overlay, dot-matrix footer patterns, frosted glass (glassmorphism) elements, a custom SVG favicon, and a global scroll-to-top action button.
+
+## Local Setup & Installation
+
+### 1. Clone the repository
+```bash
+git clone [https://github.com/your-username/lydia-painting-web.git](https://github.com/your-username/lydia-painting-web.git)
+cd lydia-painting-web
+
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+
+```
+
+### 3. Environment Variables
+
+Create a `.env.local` file in the root directory and populate it with your specific service keys. **Never commit this file to version control.**
+
+```env
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Cloudinary Configuration
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_unsigned_upload_preset
+
+# n8n Lead Routing
+NEXT_PUBLIC_N8N_WEBHOOK_URL=[https://n8n.yourdomain.com/webhook/your-webhook-id](https://n8n.yourdomain.com/webhook/your-webhook-id)
+
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+├── app/                  # Next.js App Router pages (Public & Admin)
+├── components/
+│   ├── layout/           # Header, Footer, PageHeader
+│   ├── sections/         # Hero, Services, Projects, Contact, Map
+│   └── ui/               # Reusable Modal, ScrollToTop
+├── hooks/                # Custom React hooks (useAuth)
+├── lib/                  # Utility functions and Firebase initialization
+└── types/                # TypeScript interfaces (Project data models)
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Security Rules
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Firestore Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Read access is granted to the public for rendering the portfolio. Write and Delete operations strictly require an authenticated Admin token.
 
-## Deploy on Vercel
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /projects/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+This project is optimized for deployment on [Vercel](https://vercel.com/).
+
+1. Import the GitHub repository into your Vercel dashboard.
+2. Navigate to the project settings and input all variables from your `.env.local` file.
+3. Deploy the main branch.
+
+## License
+
+Copyright 2026 Lydia Painting Company LLC. All rights reserved.
