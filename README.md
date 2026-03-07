@@ -1,9 +1,10 @@
 ```markdown
 # Lydia Painting Website & Admin Portal
+**Commercial & Industrial Painting Subcontractor Platform**
 
 A premium, high-performance web application built for Lydia Painting, a veteran and minority-owned gold standard commercial painting company based in Farmers Branch, Texas.
 
-This project serves as both a public-facing lead generation portfolio and a secure, authenticated Admin Dashboard for managing project galleries dynamically.
+This platform serves as a B2B project acquisition tool designed specifically to attract General Contractors and Developers. It features a Contractor Hub, dynamic Case Studies, a Bid Request portal, and a secure Admin Dashboard.
 
 **Live Site:** [https://www.lydiapainting.org](https://www.lydiapainting.org)
 
@@ -18,14 +19,14 @@ This project serves as both a public-facing lead generation portfolio and a secu
 * **Lead Routing:** Self-hosted n8n Webhook to SMTP Email
 * **Hosting/Deployment:** Vercel
 
-## Core Features
+## Core Commercial Features
 
-* **Dynamic Project Portfolio:** A responsive masonry-style grid that fetches live project data from Firestore.
-* **Interactive Gallery Modals:** Custom-built, accessible modals (avoiding native browser popups) that display full project descriptions and multi-image galleries.
-* **Secure Admin Dashboard:** A protected route (`/admin`) requiring Firebase authentication. Allows authorized users to Create, Read, Update, and Delete (CRUD) projects.
-* **Cloudinary Integration:** Direct-to-cloud unsigned image uploads from the Admin Dashboard, generating optimized URLs for the database.
-* **Automated Lead Generation:** A custom contact form that posts data to an n8n webhook, which parses the JSON payload and automatically fires a formatted HTML email to the company inbox.
-* **Premium UI/UX:** Features include an animated gradient hero overlay, dot-matrix footer patterns, frosted glass (glassmorphism) elements, a custom SVG favicon, and a global scroll-to-top action button.
+* **Contractor Hub:** Dedicated pages for Subcontractor Prequalification documents, Active Plan Room (Bid Calendar), OSHA Safety Standards, and DFW Service Area coverage.
+* **Commercial Case Studies:** A dynamic, interactive portfolio that details project scope, General Contractor, square footage, contract value, challenges, and results.
+* **Lead Generation & Estimating Pipeline:** A dedicated Bid Request form that allows GCs to submit project details and plan links directly to the estimating team.
+* **Careers & Recruiting Portal:** An integrated application system to recruit painters, foremen, and project managers.
+* **Smart Webhook Routing:** All forms (Contact, Bid Request, Careers) route through a single, intelligent n8n webhook that conditionally formats email payloads based on the lead type.
+* **Secure Admin Dashboard:** A protected route (`/admin`) requiring Firebase authentication, allowing authorized users to manage complex project data and upload galleries directly to Cloudinary.
 
 ## Local Setup & Installation
 
@@ -45,7 +46,7 @@ npm install
 
 ### 3. Environment Variables
 
-Create a `.env.local` file in the root directory and populate it with your specific service keys. **Never commit this file to version control.**
+Create a `.env.local` file in the root directory. **Never commit this file to version control.**
 
 ```env
 # Firebase Configuration
@@ -74,24 +75,25 @@ npm run dev
 
 Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) with your browser to see the result.
 
-## Project Structure
+## Database Schema (Firestore)
 
-```text
-src/
-├── app/                  # Next.js App Router pages (Public & Admin)
-├── components/
-│   ├── layout/           # Header, Footer, PageHeader
-│   ├── sections/         # Hero, Services, Projects, Contact, Map
-│   └── ui/               # Reusable Modal, ScrollToTop
-├── hooks/                # Custom React hooks (useAuth)
-├── lib/                  # Utility functions and Firebase initialization
-└── types/                # TypeScript interfaces (Project data models)
+**Collection:** `projects`
 
-```
+* `name` (string)
+* `location` (string)
+* `description` (string)
+* `featuredImage` (string - URL)
+* `gallery` (array of strings - URLs)
+* `createdAt` (timestamp)
+* `gc` (string)
+* `size` (string)
+* `contractValue` (string)
+* `scope` (string)
+* `completionDate` (string)
+* `challenges` (string)
+* `results` (string)
 
 ## Security Rules
-
-### Firestore Database
 
 Read access is granted to the public for rendering the portfolio. Write and Delete operations strictly require an authenticated Admin token.
 
@@ -108,14 +110,8 @@ service cloud.firestore {
 
 ```
 
-## Deployment
-
-This project is optimized for deployment on [Vercel](https://vercel.com/).
-
-1. Import the GitHub repository into your Vercel dashboard.
-2. Navigate to the project settings and input all variables from your `.env.local` file.
-3. Deploy the main branch.
-
 ## License
 
 Copyright 2026 Lydia Painting Company LLC. All rights reserved.
+
+```

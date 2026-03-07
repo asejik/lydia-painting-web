@@ -20,13 +20,17 @@ export default function AdminDashboard() {
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Form Fields
-  const [formData, setFormData] = useState({ name: "", location: "", description: "" });
+  // Expanded Form Fields
+  const [formData, setFormData] = useState({
+    name: "", location: "", description: "",
+    gc: "", size: "", contractValue: "", scope: "",
+    completionDate: "", challenges: "", results: ""
+  });
 
   // Advanced Image State
   const [existingGallery, setExistingGallery] = useState<string[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
-  const [featuredImage, setFeaturedImage] = useState<string>(""); // Holds URL or File.name
+  const [featuredImage, setFeaturedImage] = useState<string>("");
 
   useEffect(() => {
     const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
@@ -38,7 +42,13 @@ export default function AdminDashboard() {
           name: data.name,
           location: data.location,
           description: data.description,
-          // Fallback support for old singular 'imageUrl' schema during migration
+          gc: data.gc || "",
+          size: data.size || "",
+          contractValue: data.contractValue || "",
+          scope: data.scope || "",
+          completionDate: data.completionDate || "",
+          challenges: data.challenges || "",
+          results: data.results || "",
           featuredImage: data.featuredImage || data.imageUrl || "",
           gallery: data.gallery || (data.imageUrl ? [data.imageUrl] : []),
         };
@@ -61,12 +71,21 @@ export default function AdminDashboard() {
   const openModal = (project: Project | null = null) => {
     if (project) {
       setCurrentProject(project);
-      setFormData({ name: project.name, location: project.location, description: project.description });
+      setFormData({
+        name: project.name, location: project.location, description: project.description,
+        gc: project.gc || "", size: project.size || "", contractValue: project.contractValue || "",
+        scope: project.scope || "", completionDate: project.completionDate || "",
+        challenges: project.challenges || "", results: project.results || ""
+      });
       setExistingGallery(project.gallery || []);
-      setFeaturedImage(project.featuredImage || project.gallery[0] || "");
+      setFeaturedImage(project.featuredImage || project.gallery?.[0] || "");
     } else {
       setCurrentProject(null);
-      setFormData({ name: "", location: "", description: "" });
+      setFormData({
+        name: "", location: "", description: "",
+        gc: "", size: "", contractValue: "", scope: "",
+        completionDate: "", challenges: "", results: ""
+      });
       setExistingGallery([]);
       setFeaturedImage("");
     }
@@ -78,8 +97,6 @@ export default function AdminDashboard() {
     if (e.target.files) {
       const selected = Array.from(e.target.files);
       setNewFiles(prev => [...prev, ...selected]);
-
-      // Auto-set featured image if it's the very first image added
       if (!featuredImage && existingGallery.length === 0 && selected.length > 0) {
         setFeaturedImage(selected[0].name);
       }
@@ -126,28 +143,21 @@ export default function AdminDashboard() {
       const uploadedUrls: string[] = [];
       let finalFeaturedUrl = featuredImage;
 
-      // 1. Upload new files sequentially
       for (const file of newFiles) {
         const url = await uploadToCloudinary(file);
         uploadedUrls.push(url);
-        // If this file was marked as featured by its name, assign the real URL
         if (featuredImage === file.name) {
           finalFeaturedUrl = url;
         }
       }
 
-      // 2. Combine galleries
       const finalGallery = [...existingGallery, ...uploadedUrls];
-
-      // 3. Fallback check for featured image
       if (!finalFeaturedUrl || !finalGallery.includes(finalFeaturedUrl)) {
         finalFeaturedUrl = finalGallery[0];
       }
 
       const projectData = {
-        name: formData.name,
-        location: formData.location,
-        description: formData.description,
+        ...formData,
         featuredImage: finalFeaturedUrl,
         gallery: finalGallery,
       };
@@ -208,11 +218,11 @@ export default function AdminDashboard() {
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-heading font-bold text-brand-navy">Project Portfolio Manager</h1>
-            <p className="text-sm font-sans text-slate-500 mt-1">Manage the projects displayed on the public website.</p>
+            <h1 className="text-2xl font-heading font-bold text-brand-navy">Commercial Case Studies</h1>
+            <p className="text-sm font-sans text-slate-500 mt-1">Manage your detailed project portfolio.</p>
           </div>
           <button onClick={() => openModal()} className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-brand-orange border border-transparent rounded-lg hover:bg-brand-orange-hover shadow-sm">
-            <Plus className="w-4 h-4 mr-2" /> Add New Project
+            <Plus className="w-4 h-4 mr-2" /> Add New Case Study
           </button>
         </div>
 
@@ -223,8 +233,8 @@ export default function AdminDashboard() {
             <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100">
               <LayoutGrid className="w-8 h-8 text-slate-400" />
             </div>
-            <h3 className="text-lg font-heading font-semibold text-brand-navy mb-1">No projects loaded yet</h3>
-            <p className="text-sm font-sans text-slate-500 text-center mb-6">Click "Add New Project" to populate your portfolio.</p>
+            <h3 className="text-lg font-heading font-semibold text-brand-navy mb-1">No case studies loaded yet</h3>
+            <p className="text-sm font-sans text-slate-500 text-center mb-6">Click "Add New Case Study" to populate your portfolio.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -255,30 +265,65 @@ export default function AdminDashboard() {
       </main>
 
       {/* Add / Edit Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => !isSaving && setIsModalOpen(false)} title={currentProject ? "Edit Project" : "Add New Project"}>
-        <form onSubmit={handleSave} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
-            <input required type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="Downtown Hotel" />
+      <Modal isOpen={isModalOpen} onClose={() => !isSaving && setIsModalOpen(false)} title={currentProject ? "Edit Case Study" : "Add New Case Study"}>
+        <form onSubmit={handleSave} className="space-y-6">
+
+          {/* Quick Info Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Project Name *</label>
+              <input required type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. Whataburger Renovation" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Location *</label>
+              <input required type="text" value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. Bonham, TX" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">General Contractor / Client</label>
+              <input type="text" value={formData.gc} onChange={(e) => setFormData({...formData, gc: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. Turner Construction" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Completion Date</label>
+              <input type="text" value={formData.completionDate} onChange={(e) => setFormData({...formData, completionDate: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. June 2024" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Project Size</label>
+              <input type="text" value={formData.size} onChange={(e) => setFormData({...formData, size: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. 15,000 sq ft" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Contract Value</label>
+              <input type="text" value={formData.contractValue} onChange={(e) => setFormData({...formData, contractValue: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. $1.2M" />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Location</label>
-            <input required type="text" value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="Dallas, TX" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
-            <textarea required rows={3} value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none" placeholder="Details about the work..." />
+
+          {/* Detailed Info */}
+          <div className="space-y-4 pt-4 border-t border-slate-100">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Scope of Work</label>
+              <input type="text" value={formData.scope} onChange={(e) => setFormData({...formData, scope: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none" placeholder="e.g. Interior painting, Exterior coatings, Wall finishing" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Project Challenges</label>
+              <textarea rows={2} value={formData.challenges} onChange={(e) => setFormData({...formData, challenges: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none" placeholder="e.g. Work completed in occupied healthcare facility requiring low-VOC materials." />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Results Delivered</label>
+              <textarea rows={2} value={formData.results} onChange={(e) => setFormData({...formData, results: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none" placeholder="e.g. Project completed ahead of schedule with zero disruption." />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">General Description</label>
+              <textarea rows={2} value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none" placeholder="General overview of the project..." />
+            </div>
           </div>
 
           {/* Image Gallery Uploader */}
-          <div className="space-y-3">
+          <div className="space-y-3 pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-slate-700">Project Gallery</label>
+              <label className="block text-sm font-medium text-slate-700">Project Gallery (Before, During, After)</label>
               <span className="text-xs text-slate-500">Click the star to set cover image</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {/* Existing Images */}
               {existingGallery.map((url, idx) => (
                 <div key={`old-${idx}`} className={`relative group h-24 rounded-lg overflow-hidden border-2 ${featuredImage === url ? 'border-brand-orange' : 'border-slate-200'}`}>
                   <img src={url} alt="Gallery item" className="w-full h-full object-cover" />
@@ -293,7 +338,6 @@ export default function AdminDashboard() {
                 </div>
               ))}
 
-              {/* New Files Pending Upload */}
               {newFiles.map((file, idx) => (
                 <div key={`new-${idx}`} className={`relative group h-24 rounded-lg overflow-hidden border-2 ${featuredImage === file.name ? 'border-brand-orange' : 'border-slate-200'}`}>
                   <img src={URL.createObjectURL(file)} alt="Pending upload" className="w-full h-full object-cover opacity-80" />
@@ -308,7 +352,6 @@ export default function AdminDashboard() {
                 </div>
               ))}
 
-              {/* Upload Button */}
               <label className="h-24 border-2 border-dashed border-slate-300 hover:border-brand-orange hover:bg-brand-orange/5 rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
                 <UploadCloud className="w-6 h-6 text-slate-400 mb-1" />
                 <span className="text-xs font-medium text-slate-500">Add Photos</span>
@@ -320,7 +363,7 @@ export default function AdminDashboard() {
           <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
             <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
             <button type="submit" disabled={isSaving} className="px-5 py-2.5 text-sm font-medium text-white bg-brand-orange hover:bg-brand-orange-hover rounded-lg transition-colors disabled:opacity-70 flex items-center">
-              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading & Saving...</> : "Save Project"}
+              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading & Saving...</> : "Save Case Study"}
             </button>
           </div>
         </form>
@@ -333,7 +376,7 @@ export default function AdminDashboard() {
           <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
             <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
             <button onClick={handleDelete} disabled={isSaving} className="px-5 py-2.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:opacity-70 flex items-center">
-              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Deleting...</> : "Yes, Delete Project"}
+              {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Deleting...</> : "Yes, Delete Case Study"}
             </button>
           </div>
         </div>

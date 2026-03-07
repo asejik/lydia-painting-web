@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,7 +14,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
 
           {/* Brand Column */}
-          <div className="col-span-1 md:col-span-5 lg:col-span-4">
+          <div className="col-span-1 md:col-span-12 lg:col-span-4">
             <span className="font-heading font-bold text-2xl tracking-tight text-white uppercase mb-4 block">
               Lydia<span className="text-brand-orange ml-1">Painting</span>
             </span>
@@ -22,20 +23,33 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="col-span-1 md:col-span-3 lg:col-span-4 lg:pl-12">
-            <h4 className="font-heading font-semibold text-white text-lg mb-6">Quick Links</h4>
+          {/* Company Links */}
+          <div className="col-span-1 md:col-span-4 lg:col-span-2 lg:pl-8">
+            <h4 className="font-heading font-semibold text-white text-lg mb-6">Company</h4>
             <ul className="space-y-3">
               <li><Link href="/" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Home</Link></li>
               <li><Link href="/about" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">About Us</Link></li>
+              <li><Link href="/careers" className="font-sans text-sm text-brand-orange hover:text-white transition-colors">Careers</Link></li>
               <li><Link href="/services" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Services</Link></li>
+              <li><Link href="/industries" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Industries</Link></li>
               <li><Link href="/projects" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Projects</Link></li>
               <li><Link href="/contact" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
+          {/* Contractor Hub Links */}
+          <div className="col-span-1 md:col-span-4 lg:col-span-3">
+            <h4 className="font-heading font-semibold text-white text-lg mb-6">Contractor Hub</h4>
+            <ul className="space-y-3">
+              <li><Link href="/prequalification" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Prequalification</Link></li>
+              <li><Link href="/plan-room" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Bid Opportunities</Link></li>
+              <li><Link href="/safety" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Safety & OSHA</Link></li>
+              <li><Link href="/service-area" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Service Area</Link></li>
+            </ul>
+          </div>
+
           {/* Contact Info */}
-          <div className="col-span-1 md:col-span-4 lg:col-span-4">
+          <div className="col-span-1 md:col-span-4 lg:col-span-3">
             <h4 className="font-heading font-semibold text-white text-lg mb-6">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start">
@@ -49,6 +63,10 @@ export default function Footer() {
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-brand-orange mr-3 shrink-0" />
                 <span className="font-sans text-sm text-slate-400">Info@lydiapainting.com</span>
+              </li>
+              <li className="flex items-center pt-4"> {/* <-- Added LinkedIn */}
+                <Linkedin className="w-5 h-5 text-blue-500 mr-3 shrink-0" />
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-sans text-sm text-slate-400 hover:text-white transition-colors">Follow us on LinkedIn</a>
               </li>
             </ul>
           </div>

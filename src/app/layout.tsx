@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import GlobalCTA from "@/components/layout/GlobalCTA";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
         <main className="flex-grow pt-20">
           {children}
         </main>
+        <GlobalCTA />
         <Footer />
         <ScrollToTop />
       </body>
