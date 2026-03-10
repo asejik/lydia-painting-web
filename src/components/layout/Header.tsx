@@ -14,6 +14,7 @@ const navigation = [
   { name: "Plan Room", href: "/plan-room" },
   { name: "Safety", href: "/safety" },
   { name: "Contact Us", href: "/contact" },
+  { name: "Careers", href: "/careers" },
 ];
 
 export default function Header() {
