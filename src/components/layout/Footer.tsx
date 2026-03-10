@@ -15,9 +15,13 @@ export default function Footer() {
 
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-12 lg:col-span-4">
-            <span className="font-heading font-bold text-2xl tracking-tight text-white uppercase mb-4 block">
-              Lydia<span className="text-brand-orange ml-1">Painting</span>
-            </span>
+            <Link href="/" className="inline-block mb-6">
+              <img
+                src="/logo.png"
+                alt="Lydia Painting Logo"
+                className="h-20 lg:h-24 w-auto object-contain brightness-0 invert"
+              />
+            </Link>
             <p className="font-sans text-slate-400 text-sm leading-relaxed mb-6 max-w-sm">
               Painting Our Client's Envisioned Future. A veteran and minority-owned gold standard commercial painting company dedicated to diversity, community, and unmatched craftsmanship.
             </p>

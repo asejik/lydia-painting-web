@@ -46,9 +46,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1 group">
-            <span className="font-heading font-bold text-2xl tracking-tight text-brand-navy uppercase transition-colors">
-              Lydia<span className="text-brand-orange">Painting</span>
-            </span>
+            <img
+              src="/logo.png"
+              alt="Lydia Painting Logo"
+              className="h-16 md:h-20 w-auto object-contain transition-all duration-300"
+            />
           </Link>
 
           {/* Desktop Navigation */}

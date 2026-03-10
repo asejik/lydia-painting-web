@@ -205,7 +205,11 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <span className="font-heading font-bold text-xl tracking-tight text-brand-navy uppercase">Lydia<span className="text-brand-orange ml-1">Painting</span></span>
+              <img
+                src="/logo.png"
+                alt="Lydia Painting Logo"
+                className="h-12 w-auto object-contain"
+              />
               <span className="ml-3 px-2.5 py-1 rounded-md bg-brand-navy/5 text-brand-navy text-xs font-semibold uppercase tracking-wider hidden sm:block">Admin Portal</span>
             </div>
             <button onClick={handleLogout} className="flex items-center text-sm font-sans font-medium text-slate-600 hover:text-red-600 transition-colors">
