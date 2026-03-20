@@ -62,7 +62,7 @@ export default function Hero() {
         >
           Commercial & Industrial <br className="hidden md:block" />
           <span className="text-brand-orange">Painting Contractor</span> <br className="hidden md:block" />
-          Serving Dallas-Fort Worth
+          Texas and Neighboring States
         </motion.h1>
 
         {/* Subtitle */}
