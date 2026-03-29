@@ -7,12 +7,12 @@ export const metadata = {
 };
 
 const documents = [
-  { name: "W-9 Form (2026)", icon: FileText, size: "124 KB" },
-  { name: "Certificate of Insurance (COI)", icon: ShieldCheck, size: "450 KB" },
-  { name: "Safety Manual Summary", icon: HardHat, size: "1.2 MB" },
-  { name: "OSHA Training Certifications", icon: CheckCircle, size: "850 KB" },
-  { name: "EMR Rating Letter", icon: FileText, size: "210 KB" },
-  { name: "MBE/HUB Certification", icon: ShieldCheck, size: "530 KB" },
+  { name: "W-9 Form (2026)", icon: FileText, size: "124 KB", href: "#" },
+  { name: "Certificate of Insurance (COI)", icon: ShieldCheck, size: "450 KB", href: "#" },
+  { name: "Safety Policy Manual", icon: HardHat, size: "2.1 MB", href: "/docs/Lydia Painting - Safety Policy Manual.pdf" },
+  { name: "OSHA Training Certifications", icon: CheckCircle, size: "850 KB", href: "#" },
+  { name: "EMR Rating Letter", icon: FileText, size: "210 KB", href: "/docs/EMR Letter 2025.pdf" },
+  { name: "MBE/HUB Certification", icon: ShieldCheck, size: "530 KB", href: "#" },
 ];
 
 export default function PrequalificationPage() {
@@ -28,7 +28,6 @@ export default function PrequalificationPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-            {/* Left Column: Company Details */}
             <div className="lg:col-span-1 space-y-8">
               <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
                 <h3 className="text-xl font-heading font-bold text-brand-navy mb-6 border-b border-slate-100 pb-4">Company Details</h3>
@@ -39,15 +38,15 @@ export default function PrequalificationPage() {
                   </li>
                   <li className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Years in Business</span>
-                    <span className="text-sm font-medium text-slate-800">Established 2019 (7 Years)</span>
+                    <span className="text-sm font-medium text-slate-800">Established 2018</span>
                   </li>
                   <li className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Size</span>
-                    <span className="text-sm font-medium text-slate-800">25-50 Employees</span>
+                    <span className="text-sm font-medium text-slate-800">~100 Employees</span>
                   </li>
                   <li className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Bonding Capacity</span>
-                    <span className="text-sm font-medium text-slate-800">$2,000,000 Single / $5,000,000 Aggregate</span>
+                    <span className="text-sm font-medium text-slate-800">$1M Single / $3M Aggregate</span>
                   </li>
                   <li className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Primary NAICS Codes</span>
@@ -57,7 +56,6 @@ export default function PrequalificationPage() {
               </div>
             </div>
 
-            {/* Right Column: Downloadable Documents */}
             <div className="lg:col-span-2">
               <h3 className="text-2xl font-heading font-bold text-brand-navy mb-6">Compliance Documents</h3>
               <p className="font-sans text-slate-600 mb-8">
@@ -70,7 +68,9 @@ export default function PrequalificationPage() {
                   return (
                     <a
                       key={index}
-                      href="#" // Replace with actual PDF links from Cloudinary/Firebase later
+                      href={doc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="group flex items-center p-5 bg-white rounded-xl border border-slate-200 hover:border-brand-orange hover:shadow-md transition-all duration-200"
                     >
                       <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center mr-4 group-hover:bg-brand-orange/10 transition-colors">
@@ -78,7 +78,7 @@ export default function PrequalificationPage() {
                       </div>
                       <div className="flex-grow">
                         <h4 className="font-sans font-semibold text-sm text-brand-navy group-hover:text-brand-orange transition-colors">{doc.name}</h4>
-                        <span className="text-xs text-slate-400">{doc.size} • PDF</span>
+                        <span className="text-xs text-slate-400">{doc.size} * PDF</span>
                       </div>
                       <Download className="w-5 h-5 text-slate-300 group-hover:text-brand-orange transition-colors" />
                     </a>

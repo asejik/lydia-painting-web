@@ -1,4 +1,6 @@
 import PageHeader from "@/components/layout/PageHeader";
+import { ChevronRight, Home } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = { title: "EMR Rating | Lydia Painting" };
 
@@ -10,7 +12,16 @@ export default function EmrRatingPage() {
         description="A direct reflection of our proactive safety culture and commitment to protecting our workforce."
         bgImage="https://images.unsplash.com/photo-1504307651254-35680f356f27?q=80&w=2000&auto=format&fit=crop"
       />
-      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        <div className="mb-6 flex items-center text-sm font-sans text-slate-500">
+          <Link href="/" className="hover:text-brand-orange transition-colors"><Home className="w-4 h-4" /></Link>
+          <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
+          <Link href="/safety" className="hover:text-brand-orange transition-colors">Safety Commitment</Link>
+          <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
+          <span className="text-brand-navy font-semibold">EMR Rating</span>
+        </div>
+
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12 text-center">
           <h2 className="text-3xl font-heading font-bold text-brand-navy mb-4">Industry-Leading Safety Metrics</h2>
           <p className="font-sans text-slate-600 leading-relaxed mb-12 max-w-2xl mx-auto">

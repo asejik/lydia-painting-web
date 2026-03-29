@@ -1,5 +1,5 @@
 import PageHeader from "@/components/layout/PageHeader";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = { title: "OSHA Compliance | Lydia Painting" };
@@ -12,7 +12,16 @@ export default function OshaCompliancePage() {
         description="A foundational pillar of our safety program is strict adherence to Occupational Safety and Health Administration (OSHA) regulations."
         bgImage="https://images.unsplash.com/photo-1504917595217-d4f50060ea05?q=80&w=2000&auto=format&fit=crop"
       />
-      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        <div className="mb-6 flex items-center text-sm font-sans text-slate-500">
+          <Link href="/" className="hover:text-brand-orange transition-colors"><Home className="w-4 h-4" /></Link>
+          <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
+          <Link href="/safety" className="hover:text-brand-orange transition-colors">Safety Commitment</Link>
+          <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
+          <span className="text-brand-navy font-semibold">OSHA Compliance</span>
+        </div>
+
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12">
           <h2 className="text-3xl font-heading font-bold text-brand-navy mb-6">Certification & Training</h2>
           <p className="font-sans text-slate-600 leading-relaxed mb-8">
@@ -32,7 +41,7 @@ export default function OshaCompliancePage() {
               <p className="font-sans text-slate-700"><strong>Fall Protection & Scaffolding:</strong> Specialized training is conducted for Personal Fall Arrest Systems (PFAS) and proper scaffold erection, use, and dismantling under the supervision of a Competent Person.</p>
             </li>
           </ul>
-          <Link href="/prequalification" className="text-brand-orange font-semibold hover:underline">Download our OSHA Certifications in the Plan Room &rarr;</Link>
+          <Link href="/prequalification" className="text-brand-orange font-semibold hover:underline">Download our OSHA Certifications in the Plan Room</Link>
         </div>
       </section>
     </div>
