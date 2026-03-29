@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 
+// Make sure the 'src' paths exactly match the filenames you saved in the public/vendors/ folder!
 const vendors = [
-  "Sherwin-Williams",
-  "PPG",
-  "Benjamin Moore",
-  "Behr Professional",
-  "Tnemec",
+  { name: "Sherwin-Williams", src: "/vendors/sherwin-williams.png" },
+  { name: "PPG", src: "/vendors/ppg.png" },
+  { name: "Benjamin Moore", src: "/vendors/benjamin-moore.png" },
+  { name: "Behr Professional", src: "/vendors/behr.png" },
+  { name: "Tnemec", src: "/vendors/tnemec.jpeg" },
 ];
 
 export default function Vendors() {
@@ -26,14 +27,18 @@ export default function Vendors() {
         <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16">
           {vendors.map((vendor, index) => (
             <motion.div
-              key={vendor}
+              key={vendor.name}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="text-xl sm:text-2xl font-heading font-black text-slate-300 uppercase tracking-tighter"
+              className="w-28 sm:w-36 md:w-40 flex items-center justify-center"
             >
-              {vendor}
+              <img
+                src={vendor.src}
+                alt={`${vendor.name} Logo`}
+                className="w-full h-auto max-h-16 object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              />
             </motion.div>
           ))}
         </div>
