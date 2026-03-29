@@ -1,5 +1,6 @@
 import PageHeader from "@/components/layout/PageHeader";
-import { HardHat, ShieldAlert, Activity, ClipboardCheck } from "lucide-react";
+import Link from "next/link";
+import { HardHat, ShieldAlert, Activity, ClipboardCheck, ArrowRight } from "lucide-react";
 
 export const metadata = {
   title: "Safety Standards & OSHA Compliance | Lydia Painting",
@@ -19,28 +20,44 @@ export default function SafetyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-              <HardHat className="w-10 h-10 text-brand-orange mb-4" />
-              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3">OSHA Compliance</h4>
-              <p className="font-sans text-sm text-slate-600 leading-relaxed">All foremen and project managers carry OSHA 30 certifications. Field crews are required to hold OSHA 10 certifications minimum.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-              <ClipboardCheck className="w-10 h-10 text-brand-orange mb-4" />
-              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3">Jobsite Procedures</h4>
-              <p className="font-sans text-sm text-slate-600 leading-relaxed">Daily Job Hazard Analysis (JHA) and weekly toolbox talks are mandatory before work commences on any commercial site.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-              <Activity className="w-10 h-10 text-brand-orange mb-4" />
-              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3">EMR Rating</h4>
-              <p className="font-sans text-sm text-slate-600 leading-relaxed">We maintain an Experience Modification Rate (EMR) well below the industry average, directly reflecting our proactive safety culture.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-              <ShieldAlert className="w-10 h-10 text-brand-orange mb-4" />
-              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3">Hazardous Materials</h4>
-              <p className="font-sans text-sm text-slate-600 leading-relaxed">Strict adherence to environmental regulations for the handling, application, and disposal of industrial coatings and solvents.</p>
-            </div>
-          </div>
 
+            <Link href="/safety/osha-compliance" className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-brand-orange hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+              <HardHat className="w-10 h-10 text-brand-orange mb-4 group-hover:scale-110 transition-transform" />
+              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3 group-hover:text-brand-orange transition-colors">OSHA Compliance</h4>
+              <p className="font-sans text-sm text-slate-600 leading-relaxed flex-grow">All foremen and project managers carry OSHA 30 certifications. Field crews are required to hold OSHA 10 certifications minimum.</p>
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-semibold text-brand-orange">
+                Read Details <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            <Link href="/safety/jobsite-procedures" className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-brand-orange hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+              <ClipboardCheck className="w-10 h-10 text-brand-orange mb-4 group-hover:scale-110 transition-transform" />
+              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3 group-hover:text-brand-orange transition-colors">Jobsite Procedures</h4>
+              <p className="font-sans text-sm text-slate-600 leading-relaxed flex-grow">Daily Job Hazard Analysis (JHA) and weekly toolbox talks are mandatory before work commences on any commercial site.</p>
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-semibold text-brand-orange">
+                Read Details <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            <Link href="/safety/emr-rating" className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-brand-orange hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+              <Activity className="w-10 h-10 text-brand-orange mb-4 group-hover:scale-110 transition-transform" />
+              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3 group-hover:text-brand-orange transition-colors">EMR Rating</h4>
+              <p className="font-sans text-sm text-slate-600 leading-relaxed flex-grow">We maintain an Experience Modification Rate (EMR) well below the industry average, directly reflecting our proactive safety culture.</p>
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-semibold text-brand-orange">
+                View Ratings <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            <Link href="/safety/hazardous-materials" className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-brand-orange hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+              <ShieldAlert className="w-10 h-10 text-brand-orange mb-4 group-hover:scale-110 transition-transform" />
+              <h4 className="font-heading font-bold text-xl text-brand-navy mb-3 group-hover:text-brand-orange transition-colors">Hazardous Materials</h4>
+              <p className="font-sans text-sm text-slate-600 leading-relaxed flex-grow">Strict adherence to environmental regulations for the handling, application, and disposal of industrial coatings and solvents.</p>
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-semibold text-brand-orange">
+                Read Details <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+          </div>
         </div>
       </section>
     </div>

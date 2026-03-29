@@ -1,6 +1,6 @@
 import PageHeader from "@/components/layout/PageHeader";
 import TrustIndicators from "@/components/sections/TrustIndicators";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Users, Briefcase, FileText, Landmark } from "lucide-react";
 
 export const metadata = {
   title: "About Us | Commercial Painting Contractors | Lydia Painting",
@@ -20,30 +20,80 @@ export default function AboutPage() {
       <PageHeader
         title="About Lydia Painting"
         description="A veteran and minority-owned gold standard commercial painting company dedicated to diversity, community, and unmatched craftsmanship."
-        bgImage="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=2000&auto=format&fit=crop"
+        bgImage="https://images.unsplash.com/photo-1762545078318-8443881c2d83?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       />
 
       {/* Our Story & Capacity */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
               <h2 className="text-sm font-sans font-bold tracking-wider text-brand-orange uppercase mb-3">Company Profile</h2>
               <h3 className="text-3xl md:text-4xl font-heading font-bold text-brand-navy mb-6">Built on Discipline. Driven by Excellence.</h3>
               <p className="font-sans text-slate-600 leading-relaxed mb-6">
-                Founded in 2019, Lydia Painting Company LLC was built on the core values instilled through military service: discipline, precision, and unwavering reliability. We recognized a critical gap in the Dallas-Fort Worth commercial construction market for a painting subcontractor that could handle massive scale while maintaining rigorous safety and quality standards.
+                Founded in 2018, Lydia Painting Company LLC was built on the core values instilled through military service: discipline, precision, and unwavering reliability. We recognized a critical gap in the Dallas-Fort Worth commercial construction market for a painting subcontractor that could handle massive scale while maintaining rigorous safety and quality standards.
               </p>
               <p className="font-sans text-slate-600 leading-relaxed mb-8">
-                Today, with a highly trained workforce of 25-50 dedicated professionals, we partner with the region's top General Contractors to deliver multi-million dollar institutional, industrial, and commercial projects on time and strictly within budget.
+                Today, with a highly trained workforce of approximately 100 dedicated professionals, we partner with the region's top General Contractors to deliver multi-million dollar institutional, industrial, and commercial projects on time and strictly within budget.
               </p>
-              <ul className="space-y-3 font-sans text-brand-navy font-semibold">
+              <ul className="space-y-3 font-sans text-brand-navy font-semibold mb-10">
                 <li className="flex items-center"><CheckCircle2 className="w-5 h-5 text-brand-orange mr-3" /> Fully Licensed, Bonded, and Insured</li>
                 <li className="flex items-center"><CheckCircle2 className="w-5 h-5 text-brand-orange mr-3" /> Certified MBE / HUB / Veteran-Owned Business</li>
                 <li className="flex items-center"><CheckCircle2 className="w-5 h-5 text-brand-orange mr-3" /> Zero-Incident Safety Culture & Low EMR Rating</li>
               </ul>
+
+              {/* Company Quick Facts Grid */}
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8">
+                <h4 className="font-heading font-bold text-xl text-brand-navy mb-6 border-b border-slate-200 pb-4">Company at a Glance</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="flex items-start gap-3">
+                    <FileText className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Legal Name</p>
+                      <p className="text-sm font-bold text-brand-navy">Lydia Painting Company LLC</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Landmark className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Established</p>
+                      <p className="text-sm font-bold text-brand-navy">July 16, 2018</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Users className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Workforce Size</p>
+                      <p className="text-sm font-bold text-brand-navy">~100 Employees</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Briefcase className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Annual Volume</p>
+                      <p className="text-sm font-bold text-brand-navy">$2M – $3M</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Bonding Capacity</p>
+                      <p className="text-sm font-bold text-brand-navy">$1M Single / $3M Aggregate</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <FileText className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Primary NAICS</p>
+                      <p className="text-sm font-bold text-brand-navy">238320 (Painting/Wall Covering)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
-              <img src="/about-img.jpeg" alt="Commercial Construction Site" className="w-full h-full object-cover" />
+
+            <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-xl sticky top-24 hidden lg:block">
+              <img src="https://images.unsplash.com/photo-1762545078318-8443881c2d83?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Commercial Construction Site" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-brand-navy/10" />
             </div>
           </div>
