@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import GlobalCTA from "@/components/layout/GlobalCTA";
+import MainWrapper from "@/components/layout/MainWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,9 +35,9 @@ export default function RootLayout({
         className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-slate-50 text-slate-900 selection:bg-teal-900 selection:text-white flex flex-col min-h-screen`}
       >
         <Header />
-        <main className="flex-grow pt-20">
+        <MainWrapper>
           {children}
-        </main>
+        </MainWrapper>
         <GlobalCTA />
         <Footer />
         <ScrollToTop />

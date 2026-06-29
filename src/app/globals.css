@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* Map our Next.js font variables to Tailwind utility classes */
@@ -32,4 +33,84 @@
   a, button, [role="button"], input, select, textarea {
     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23f26e22' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08'/><path d='M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z'/></svg>") 0 24, pointer !important;
   }
+}
+
+/* -------------------------------------------------------------
+ * QUILL & PROSE RICH TEXT FIXES
+ * ------------------------------------------------------------- */
+
+/* Restores standard paragraph margins for Quill output elements inside Tailwind prose */
+.prose.ql-editor p {
+  margin-top: 0px !important;
+  margin-bottom: 1.5rem !important; /* Respected paragraph margins */
+}
+
+/* Ensure default line height unless explicitly overridden inline */
+.prose.ql-editor p:not([style*="line-height"]),
+.prose.ql-editor li:not([style*="line-height"]) {
+  line-height: 1.75 !important;
+}
+
+/* Restores list markers (bullets & numbering) inside Tailwind prose */
+.prose.ql-editor ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.prose.ql-editor ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.prose.ql-editor li {
+  list-style-type: inherit !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 0px !important;
+}
+
+/* Hides Quill's counter bullets which collide with Tailwind's prose markers */
+.prose.ql-editor li::before {
+  content: none !important;
+}
+
+/* Resets the margins for headers in rich text */
+.prose.ql-editor h1,
+.prose.ql-editor h2,
+.prose.ql-editor h3,
+.prose.ql-editor h4 {
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* -------------------------------------------------------------
+ * QUILL CUSTOM PICKERS (TOOLBAR DROPDOWNS)
+ * ------------------------------------------------------------- */
+.ql-snow .ql-picker.ql-lineheight {
+  width: 105px !important;
+}
+.ql-snow .ql-picker.ql-lineheight .ql-picker-label::before,
+.ql-snow .ql-picker.ql-lineheight .ql-picker-item::before {
+  content: 'Line: ' attr(data-value) !important;
+}
+.ql-snow .ql-picker.ql-lineheight .ql-picker-label:not([data-value])::before,
+.ql-snow .ql-picker.ql-lineheight .ql-picker-item:not([data-value])::before {
+  content: 'Line Height' !important;
+}
+
+.ql-snow .ql-picker.ql-paragraphspacing {
+  width: 120px !important;
+}
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-label::before,
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-item::before {
+  content: 'Space: ' attr(data-value) !important;
+}
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-label[data-value="0px"]::before,
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-item[data-value="0px"]::before {
+  content: 'Space: 0px' !important;
+}
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-label:not([data-value])::before,
+.ql-snow .ql-picker.ql-paragraphspacing .ql-picker-item:not([data-value])::before {
+  content: 'Para Spacing' !important;
 }

@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className="bg-brand-navy relative overflow-hidden pt-20 pb-10 border-t-4 border-brand-orange">
@@ -37,6 +42,7 @@ export default function Footer() {
               <li><Link href="/services" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Services</Link></li>
               <li><Link href="/industries" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Industries</Link></li>
               <li><Link href="/projects" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Projects</Link></li>
+              <li><Link href="/blog" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Blog</Link></li>
               <li><Link href="/contact" className="font-sans text-sm text-slate-400 hover:text-brand-orange transition-colors">Contact Us</Link></li>
             </ul>
           </div>

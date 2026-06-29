@@ -8,9 +8,12 @@ import { useRouter } from "next/navigation";
 import { LogOut, Plus, LayoutGrid, Edit, Trash2, Loader2, Star, X, UploadCloud } from "lucide-react";
 import Modal from "@/components/ui/Modal";
 import { Project } from "@/types";
+import AdminHeader from "@/components/admin/AdminHeader";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,6 +36,8 @@ export default function AdminDashboard() {
   const [featuredImage, setFeaturedImage] = useState<string>("");
 
   useEffect(() => {
+    // Only subscribe to Firestore once the user is confirmed authenticated
+    if (authLoading || !user) return;
     const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const projectsData = snapshot.docs.map(doc => {
@@ -55,18 +60,12 @@ export default function AdminDashboard() {
       }) as Project[];
       setProjects(projectsData);
       setIsLoading(false);
+    }, (error) => {
+      console.error("Firestore snapshot error:", error);
+      setIsLoading(false);
     });
     return () => unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.push("/admin/login");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  }, [user, authLoading]);
 
   const openModal = (project: Project | null = null) => {
     if (project) {
@@ -199,27 +198,21 @@ export default function AdminDashboard() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <img
-                src="/logo.png"
-                alt="Lydia Painting Logo"
-                className="h-12 w-auto object-contain"
-              />
-              <span className="ml-3 px-2.5 py-1 rounded-md bg-brand-navy/5 text-brand-navy text-xs font-semibold uppercase tracking-wider hidden sm:block">Admin Portal</span>
-            </div>
-            <button onClick={handleLogout} className="flex items-center text-sm font-sans font-medium text-slate-600 hover:text-red-600 transition-colors">
-              <LogOut className="w-4 h-4 mr-2" /> Sign Out
-            </button>
-          </div>
+  if (authLoading) {
+    return (
+      <>
+        <AdminHeader />
+        <div className="flex-grow flex items-center justify-center py-24">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-orange" />
         </div>
-      </header>
+      </>
+    );
+  }
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+  return (
+    <>
+      <AdminHeader />
+      <div className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-heading font-bold text-brand-navy">Commercial Case Studies</h1>
@@ -266,7 +259,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
-      </main>
+      </div>
 
       {/* Add / Edit Modal */}
       <Modal isOpen={isModalOpen} onClose={() => !isSaving && setIsModalOpen(false)} title={currentProject ? "Edit Case Study" : "Add New Case Study"}>
@@ -385,6 +378,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

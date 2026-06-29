@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { ArrowRight, Mail } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function GlobalCTA() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
   return (
     <section className="bg-brand-navy py-16 relative overflow-hidden border-t-4 border-brand-orange">
       {/* Background Dot Pattern to match Footer */}

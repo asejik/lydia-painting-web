@@ -105,13 +105,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+    match /blogPosts/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
   }
 }
-
 ```
 
 ## License
 
 Copyright 2026 Lydia Painting Company LLC. All rights reserved.
-
-```

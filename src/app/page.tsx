@@ -6,6 +6,7 @@ import Services from "@/components/sections/Services";
 import Industries from "@/components/sections/Industries";
 import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
+import BlogPreview from "@/components/sections/BlogPreview";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       <Industries />
       <Projects limitDisplay={3} />
       <Testimonials />
+      <BlogPreview />
       <Contact />
     </main>
   );

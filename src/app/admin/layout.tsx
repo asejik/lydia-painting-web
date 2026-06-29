@@ -3,19 +3,32 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut, LayoutGrid, FileText } from "lucide-react";
+import Link from "next/link";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
     // If not loading, no user is found, and we are not already on the login page -> Redirect
-    if (!loading && !user && pathname !== "/admin/login") {
+    if (!loading && !user && !isLoginPage) {
       router.push("/admin/login");
     }
-  }, [user, loading, router, pathname]);
+  }, [user, loading, router, isLoginPage]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push("/admin/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   // Show a premium loading state while verifying auth
   if (loading) {
@@ -28,8 +41,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {children}
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <main className="flex-grow flex flex-col w-full">
+        {children}
+      </main>
     </div>
   );
 }

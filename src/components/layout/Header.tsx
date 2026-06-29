@@ -13,6 +13,7 @@ const navigation = [
   { name: "Projects", href: "/projects" },
   { name: "Plan Room", href: "/plan-room" },
   { name: "Safety", href: "/safety" },
+  { name: "Blog", href: "/blog" },
   { name: "Contact Us", href: "/contact" },
   { name: "Careers", href: "/careers" },
 ];
@@ -21,6 +22,9 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  // Hide the global site header on all admin pages
+  if (pathname?.startsWith("/admin")) return null;
 
   useEffect(() => {
     const handleScroll = () => {
