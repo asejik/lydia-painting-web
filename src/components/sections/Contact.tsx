@@ -107,7 +107,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-heading font-semibold text-brand-navy text-lg">Email</h4>
-                  <p className="font-sans text-sm text-slate-600">Info@lydiapainting.com</p>
+                  <a href="mailto:Info@lydiapainting.org" className="font-sans text-sm text-slate-600 hover:text-brand-orange transition-colors">Info@lydiapainting.org</a>
                 </div>
               </div>
             </div>

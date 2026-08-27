@@ -72,11 +72,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-brand-orange mr-3 shrink-0" />
-                <span className="font-sans text-sm text-slate-400">Info@lydiapainting.com</span>
+                <a href="mailto:Info@lydiapainting.org" className="font-sans text-sm text-slate-400 hover:text-white transition-colors">Info@lydiapainting.org</a>
               </li>
               <li className="flex items-center pt-4"> {/* <-- Added LinkedIn */}
                 <Linkedin className="w-5 h-5 text-blue-500 mr-3 shrink-0" />
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-sans text-sm text-slate-400 hover:text-white transition-colors">Follow us on LinkedIn</a>
+                <a href="https://www.linkedin.com/company/lydia-painting" target="_blank" rel="noopener noreferrer" className="font-sans text-sm text-slate-400 hover:text-white transition-colors">Follow us on LinkedIn</a>
               </li>
             </ul>
           </div>

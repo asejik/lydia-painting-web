@@ -78,7 +78,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent transition-all font-sans text-slate-800"
-                  placeholder="admin@lydiapainting.com"
+                  placeholder="admin@lydiapainting.org"
                 />
               </div>
             </div>
