@@ -18,7 +18,11 @@ export interface JobPosition {
   }[];
   scopeOfWork: string[];
   preferredToolsAndSkills: {
-    mandatory: string[];
+    // Nice-to-have only; "or equivalent" tools are welcome
+    niceToHaveTools: {
+      area: string;
+      tools: string;
+    }[];
     coreSkills: string[];
     specializedAreas: string[];
     bonus: string[];
@@ -100,9 +104,15 @@ export const openPositions: JobPosition[] = [
       "Promote thought leadership, project highlights, and training activities"
     ],
     preferredToolsAndSkills: {
-      mandatory: [
-        "Canva",
-        "Adobe Creative Suite (Premiere Pro, Photoshop, Illustrator, XD)"
+      niceToHaveTools: [
+        { area: "Video & reels", tools: "CapCut" },
+        { area: "Design", tools: "Canva, Figma or Photoshop" },
+        { area: "Scheduling & publishing", tools: "Meta Business Suite, Buffer, Hootsuite, Later or Sprout Social" },
+        { area: "Analytics & reporting", tools: "LinkedIn Page Analytics, Meta Insights or Google Analytics 4" },
+        { area: "SEO", tools: "Google Search Console, Google Analytics 4 or keyword research tools" },
+        { area: "Social listening & trends", tools: "Sprout Social or Hootsuite listening, Google Alerts or Google Trends" },
+        { area: "Planning & collaboration", tools: "Google Workspace, Notion, Trello or Asana" },
+        { area: "AI assistants", tools: "ChatGPT, Canva or Gemini" }
       ],
       coreSkills: [
         "Video editing & post-production",

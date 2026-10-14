@@ -222,24 +222,6 @@ export default async function JobDetailPage({ params }: JobPageProps) {
                 </div>
 
                 <div className="space-y-6">
-                  {/* Mandatory Tools */}
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-brand-navy mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      Mandatory Tools
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {job.preferredToolsAndSkills.mandatory.map((tool, i) => (
-                        <span
-                          key={i}
-                          className="px-3.5 py-1.5 bg-slate-900 text-white text-xs sm:text-sm font-semibold rounded-lg shadow-xs"
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Core Skills */}
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-brand-navy mb-3 flex items-center gap-2">
@@ -274,6 +256,25 @@ export default async function JobDetailPage({ params }: JobPageProps) {
                         </span>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Nice-to-Have Tools */}
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-brand-navy mb-1 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-slate-400" />
+                      Nice-to-Have Tools
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mb-3">
+                      None of these are required. Experience with equivalent tools is just as welcome.
+                    </p>
+                    <dl className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
+                      {job.preferredToolsAndSkills.niceToHaveTools.map((item, i) => (
+                        <div key={i} className="grid grid-cols-1 sm:grid-cols-[13.5rem_1fr] gap-0.5 sm:gap-4 px-4 py-2.5 bg-white">
+                          <dt className="text-xs sm:text-sm font-semibold text-brand-navy">{item.area}</dt>
+                          <dd className="text-xs sm:text-sm text-slate-600">{item.tools}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </div>
 
                   {/* Bonus */}
