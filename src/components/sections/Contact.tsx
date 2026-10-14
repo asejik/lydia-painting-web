@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { submitForm } from "@/lib/submitForm";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,26 +28,8 @@ export default function Contact() {
     setIsSubmitting(true);
     setError("");
 
-    const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
-
-    if (!webhookUrl) {
-      setError("Routing configuration is missing. Please contact support directly via email.");
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
+      await submitForm("contact", formData);
 
       setIsSuccess(true);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", service: "", message: "" });

@@ -16,7 +16,7 @@ This platform serves as a B2B project acquisition tool designed specifically to 
 * **Database:** Firebase Firestore (NoSQL document database)
 * **Authentication:** Firebase Auth (Email/Password)
 * **Image Hosting:** Cloudinary (Unsigned client-side uploads)
-* **Lead Routing:** Self-hosted n8n Webhook to SMTP Email
+* **Lead Routing:** Next.js API route (`/api/submit`) sending email via Gmail SMTP (Nodemailer)
 * **Hosting/Deployment:** Vercel
 
 ## Core Commercial Features
@@ -25,7 +25,7 @@ This platform serves as a B2B project acquisition tool designed specifically to 
 * **Commercial Case Studies:** A dynamic, interactive portfolio that details project scope, General Contractor, square footage, contract value, challenges, and results.
 * **Lead Generation & Estimating Pipeline:** A dedicated Bid Request form that allows GCs to submit project details and plan links directly to the estimating team.
 * **Careers & Recruiting Portal:** An integrated application system to recruit painters, foremen, and project managers.
-* **Smart Webhook Routing:** All forms (Contact, Bid Request, Careers) route through a single, intelligent n8n webhook that conditionally formats email payloads based on the lead type.
+* **Form Email Routing:** All forms (Contact, Bid Request, Careers) post to a single API route (`/api/submit`) that formats the email by lead type and delivers it to Info@lydiapainting.com and lydiapaintingweb@gmail.com.
 * **Secure Admin Dashboard:** A protected route (`/admin`) requiring Firebase authentication, allowing authorized users to manage complex project data and upload galleries directly to Cloudinary.
 
 ## Local Setup & Installation
@@ -61,8 +61,9 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_unsigned_upload_preset
 
-# n8n Lead Routing
-NEXT_PUBLIC_N8N_WEBHOOK_URL=[https://n8n.yourdomain.com/webhook/your-webhook-id](https://n8n.yourdomain.com/webhook/your-webhook-id)
+# Form Email (Gmail SMTP — server-only, no NEXT_PUBLIC_ prefix)
+GMAIL_USER=lydiapaintingweb@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_gmail_app_password
 
 ```
 

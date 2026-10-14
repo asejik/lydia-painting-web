@@ -18,6 +18,7 @@ import {
   Briefcase
 } from "lucide-react";
 import { openPositions } from "@/data/careers";
+import { submitForm } from "@/lib/submitForm";
 
 export default function CareersPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,17 +37,7 @@ export default function CareersPage() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      if (process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL) {
-        await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            source: "Careers Form",
-            ...formData,
-            submittedAt: new Date().toISOString()
-          }),
-        });
-      }
+      await submitForm("careers", formData);
       setIsSubmitted(true);
       setFormData({
         name: "",
@@ -58,7 +49,7 @@ export default function CareersPage() {
       });
     } catch (error) {
       console.error("Submission failed", error);
-      alert("Error submitting application. Please email us directly at info@lydiapainting.org.");
+      alert("Error submitting application. Please email us directly at Info@lydiapainting.com.");
     } finally {
       setIsSubmitting(false);
     }

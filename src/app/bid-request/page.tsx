@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Loader2, CheckCircle, FileText } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
+import { submitForm } from "@/lib/submitForm";
 
 export default function BidRequestPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,14 +28,7 @@ export default function BidRequestPage() {
     setIsSubmitting(true);
 
     try {
-      await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL!, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "Bid Request Form",
-          ...formData
-        }),
-      });
+      await submitForm("bid-request", formData);
       setIsSubmitted(true);
       setFormData({ companyName: "", contactName: "", contactEmail: "", phone: "", projectName: "", projectAddress: "", projectType: "", estimatedStartDate: "", planLink: "", additionalDetails: "" });
     } catch (error) {

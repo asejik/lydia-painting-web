@@ -18,14 +18,14 @@ There is no test suite.
 
 ## Stack
 
-Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Firebase (Firestore + Auth, client SDK only), Cloudinary, n8n. Path alias `@/*` → `src/*`.
+Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Firebase (Firestore + Auth, client SDK only), Cloudinary, Nodemailer (Gmail SMTP). Path alias `@/*` → `src/*`.
 
 ## Architecture
 
-**No backend/API routes.** Everything talks to external services directly from the browser using `NEXT_PUBLIC_*` env vars (see README for the full `.env.local` list):
+**Almost everything runs in the browser.** Pages talk to Firestore and Cloudinary directly using `NEXT_PUBLIC_*` env vars (see README for the full `.env.local` list); the only server code is the form email route:
 - **Firestore** (`src/lib/firebase.ts`) — collections `projects` and `blogPosts`. Public read, authenticated write, enforced only by `firestore.rules`. If you add a collection, add a rule there (and deploy it via Firebase; it isn't deployed by Vercel).
 - **Cloudinary** — admin pages upload images via unsigned preset (`uploadToCloudinary` is duplicated in `src/app/admin/page.tsx` and `src/app/admin/blog/page.tsx`); only the resulting URLs are stored in Firestore.
-- **n8n webhook** — Contact, Bid Request, and Careers forms all POST JSON to the single `NEXT_PUBLIC_N8N_WEBHOOK_URL`. n8n branches on the payload (e.g. a `source` field) to format emails, so keep payload shapes/identifiers stable when editing forms.
+- **Form email (`src/app/api/submit/route.ts`)** — Contact, Bid Request, Careers and Job Application forms call `submitForm(formType, data)` from `src/lib/submitForm.ts`, which POSTs to `/api/submit`. The route whitelists each form's fields (the `FORMS` map), then emails the submission via Gmail SMTP (`GMAIL_USER`, `GMAIL_APP_PASSWORD` — server-only env vars) to the hard-coded `RECIPIENTS`, with the submitter as reply-to. When adding a form field, add it to that form's entry in `FORMS` or it won't appear in the email.
 
 **Data rendering patterns:**
 - `projects` are fetched client-side (`src/components/sections/Projects.tsx`, admin page) ordered by `createdAt`.

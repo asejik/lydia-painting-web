@@ -146,7 +146,7 @@ export const openPositions: JobPosition[] = [
       collaboratesWith: "Project Managers, Estimators, and Site Teams"
     },
     howToApply: {
-      email: "info@lydiapainting.org",
+      email: "Info@lydiapainting.com",
       subject: "Remote Social Media Manager Application",
       requirements: [
         "Resume / CV",

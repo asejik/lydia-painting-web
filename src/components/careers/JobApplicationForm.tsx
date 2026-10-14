@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckCircle2, Loader2, Send, Mail, Copy, Check, FileText, ExternalLink } from "lucide-react";
 import { JobPosition } from "@/data/careers";
+import { submitForm } from "@/lib/submitForm";
 
 interface JobApplicationFormProps {
   job: JobPosition;
@@ -43,19 +44,7 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      if (process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL) {
-        await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            source: "Careers Job Application",
-            jobId: job.id,
-            jobTitle: job.title,
-            ...formData,
-            submittedAt: new Date().toISOString()
-          })
-        });
-      }
+      await submitForm("job-application", formData);
       setIsSubmitted(true);
       setFormData({
         name: "",
