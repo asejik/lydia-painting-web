@@ -27,7 +27,7 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
   const mailtoUrl = `mailto:${job.howToApply.email}?subject=${encodeURIComponent(
     job.howToApply.subject
   )}&body=${encodeURIComponent(
-    `Dear Hiring Team at Lydia Painting LLC,\n\nI am applying for the ${job.title} position.\n\nPlease find attached:\n- Resume / CV\n- Cover Letter\n- Portfolio / Work Samples\n\nFull Name: \nPhone: \nLocation: \nPortfolio URL: \n\nThank you for your consideration,\n`
+    `Dear Hiring Team at Lydia Painting LLC,\n\nI am applying for the ${job.title} position.\n\nPlease find attached:\n${job.howToApply.requirements.map((r) => `- ${r}`).join("\n")}\n\nFull Name: \nPhone: \nLocation: \n${job.howToApply.linkLabel}: \n\nThank you for your consideration,\n`
   )}`;
 
   const handleCopyEmail = async () => {
@@ -216,18 +216,18 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Portfolio or Work Samples Link *
+                {job.howToApply.linkLabel} *
               </label>
               <input
                 required
                 type="url"
-                placeholder="https://drive.google.com/... or portfolio link"
+                placeholder={job.howToApply.linkPlaceholder}
                 value={formData.resumeLink}
                 onChange={(e) => setFormData({ ...formData, resumeLink: e.target.value })}
                 className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none"
               />
               <p className="text-[11px] text-slate-500 mt-1">
-                Provide a publicly accessible link to your portfolio, reels, or Google Drive folder.
+                {job.howToApply.linkHelp}
               </p>
             </div>
 
@@ -237,7 +237,7 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
               </label>
               <textarea
                 rows={3}
-                placeholder="Briefly highlight your experience with social media management, content creation, and tools..."
+                placeholder={job.howToApply.messagePlaceholder}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-orange outline-none resize-none"
