@@ -28,7 +28,7 @@ export default function CareersPage() {
     name: "",
     email: "",
     phone: "",
-    position: openPositions[0]?.title || "Social Media & Communications Manager (Remote)",
+    position: openPositions[0]?.title || "Social Media Assistant (Remote)",
     resumeLink: "",
     message: ""
   });

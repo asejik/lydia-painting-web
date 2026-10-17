@@ -46,122 +46,120 @@ export interface JobPosition {
 
 export const openPositions: JobPosition[] = [
   {
-    id: "social-media-communications-manager",
-    slug: "social-media-communications-manager",
-    title: "Social Media & Communications Manager (Remote)",
+    id: "social-media-assistant",
+    slug: "social-media-assistant",
+    title: "Social Media Assistant (Remote)",
     company: "Lydia Painting LLC",
     location: "Fully Remote",
     locationDetails: "Must be based in Nigeria; collaboration with US Central Time teams",
     workplaceType: "Remote",
     salary: "Based on experience",
     employmentType: "Full-Time / Ongoing Contract",
-    department: "Marketing & Communications",
-    shortSummary: "Drive brand growth, digital storytelling, and B2B engagement across digital channels for a premier commercial painting firm.",
+    department: "Marketing",
+    shortSummary: "Plan, create and publish content for a commercial painting company across Instagram, LinkedIn, X and TikTok.",
     aboutCompany:
       "Lydia Painting LLC is a licensed commercial and industrial painting company headquartered in Dallas, Texas. Operating across Texas, Kansas, Oklahoma, and surrounding states, we pride ourselves on \"Painting Client’s Envisioned Future\" through innovation, quality, and client-centric project execution. Our services span from full interior/exterior painting and epoxy flooring to industrial coatings and wallcovering.",
     jobSummary:
-      "We are seeking a dynamic, creative, and organized social media & communication manager to build and manage Lydia Painting’s brand presence online. The ideal candidate will develop engaging digital content, drive strategic campaigns, and support the company’s visibility across platforms from estimation to project handover.",
+      "We are looking for a creative, organized Social Media Assistant to run Lydia Painting’s day-to-day social media across Instagram, LinkedIn, X and TikTok. You will plan, create, write and publish content that showcases our commercial painting projects, shares useful industry knowledge and highlights the people behind our work, while tracking how each channel is growing.",
     keyResponsibilities: [
       {
-        title: "Strategy & Growth",
+        title: "Content Planning & Publishing",
         description:
-          "Develop and execute an integrated social media strategy (LinkedIn, Instagram, Facebook, X, Threads, YouTube) to reach B2B audiences (contractors, property managers, business owners)."
+          "Plan, create, write and publish content on Instagram, LinkedIn, X and TikTok, keeping to a consistent schedule of about 3 posts per week on each platform."
       },
       {
-        title: "Content Creation",
+        title: "Project Showcases",
         description:
-          "Produce engaging posts, reels, stories, and videos highlighting project lifecycles (bids, awards, execution, handovers), team expertise, and industry innovation."
+          "Turn photos and videos from our project teams into before, in-progress and completed project posts, reels and short videos."
       },
       {
-        title: "Community Management",
+        title: "Educational & Industry Content",
         description:
-          "Respond to comments/messages, foster engagement, and manage reviews across all platforms."
+          "Write educational posts and short articles on commercial painting, coatings and relevant industry topics."
       },
       {
-        title: "Analytics & Optimization",
+        title: "Employee Spotlights & Culture",
         description:
-          "Track KPIs (LinkedIn Analytics, platform insights) to refine strategy and report monthly."
+          "Create Employee Spotlight features and content that shows our team and company culture."
       },
       {
-        title: "Cross-Functional Collaboration",
+        title: "Growth & Analytics",
         description:
-          "Coordinate with estimators, project managers, and site teams to gather real-time content and align with operational milestones."
+          "Monitor follower growth, engagement and performance on each platform, and track progress over time."
       },
       {
-        title: "Trend Integration",
+        title: "Working with Project Teams",
         description:
-          "Sync content with industry trends, societal topics, and Lydia’s brand voice."
+          "Request before, process and completed footage from project teams for new projects, and keep a library of usable content."
       }
     ],
     scopeOfWork: [
-      "Manage all existing and future digital platforms (LinkedIn, Website, Instagram, etc.)",
-      "Develop and post visual/audio/video content",
-      "Monitor and respond to audience engagement",
-      "Align content to Lydia’s brand identity, values, and tone",
-      "Reflect real-time activities across business operations",
-      "Sync content with societal trends and relevant industry topics",
-      "Monitor LinkedIn Analytics and other platform insights",
-      "Promote thought leadership, project highlights, and training activities"
+      "Manage Lydia Painting’s Instagram, LinkedIn, X and TikTok accounts",
+      "Publish about 3 posts per week on each platform",
+      "Write captions, posts and short articles",
+      "Edit photos and short-form videos from project sites",
+      "Keep content focused on commercial painting and in line with our professional brand style",
+      "Respond to comments and messages",
+      "Track follower growth and engagement on each platform"
     ],
     preferredToolsAndSkills: {
       niceToHaveTools: [
         { area: "Video & reels", tools: "CapCut" },
         { area: "Design", tools: "Canva, Figma or Photoshop" },
         { area: "Scheduling & publishing", tools: "Meta Business Suite, Buffer, Hootsuite, Later or Sprout Social" },
-        { area: "Analytics & reporting", tools: "LinkedIn Page Analytics, Meta Insights or Google Analytics 4" },
-        { area: "SEO", tools: "Google Search Console, Google Analytics 4 or keyword research tools" },
-        { area: "Social listening & trends", tools: "Sprout Social or Hootsuite listening, Google Alerts or Google Trends" },
+        { area: "Analytics & reporting", tools: "LinkedIn Page Analytics, Meta Insights or TikTok Analytics" },
         { area: "Planning & collaboration", tools: "Google Workspace, Notion, Trello or Asana" },
         { area: "AI assistants", tools: "ChatGPT, Canva or Gemini" }
       ],
       coreSkills: [
-        "Video editing & post-production",
-        "Motion graphics",
-        "SEO / keyword optimization",
-        "UGC (User-Generated Content) strategies",
-        "Campaign planning & scheduling",
-        "Social listening & trend mining"
+        "Copywriting & caption writing",
+        "Short-form video editing",
+        "Photo editing & simple graphic design",
+        "Content planning & scheduling",
+        "Basic social media analytics",
+        "Community engagement"
       ],
       specializedAreas: [
-        "Motion Graphics Design",
-        "User-Generated Content Strategy",
-        "Social Listening & Trend Mining"
+        "Before / process / completed project storytelling",
+        "Employee & company culture content",
+        "Educational B2B content"
       ],
       bonus: [
-        "Influencer collaboration experience",
-        "\"Engagement squad\" tactics & grassroots digital outreach"
+        "Experience creating content for construction, trades or B2B companies",
+        "Experience growing a TikTok or Instagram Reels audience"
       ]
     },
     deliverables: [
-      "Monthly content calendar + performance reports",
-      "3–5 weekly posts/platform (incl. reels/stories)",
-      "Campaign assets for milestones (Bidding, contract awards, Implementation, handovers)",
-      "Curated asset bank (photos, videos, testimonials)"
+      "About 3 posts per week on each platform (Instagram, LinkedIn, X and TikTok)",
+      "Project showcase content for new and completed projects",
+      "Regular educational posts and Employee Spotlight features",
+      "Monthly growth and performance updates for each platform"
     ],
     qualifications: [
-      "Bachelor’s degree in Marketing, Communications, or related field.",
-      "3+ years in social media management (B2B/construction/industrial experience preferred).",
-      "Portfolio showcasing successful campaigns, content design, and storytelling.",
-      "Expert verbal and written communication skills.",
-      "Proactive, data-driven, and adept at remote collaboration across time zones."
+      "1+ year of experience managing social media for a business or brand (in-house, agency or freelance).",
+      "A portfolio of posts, videos or accounts you have created or managed.",
+      "Strong written English and copywriting skills.",
+      "Comfortable editing photos and short-form video.",
+      "Organized and reliable, with the ability to work independently across time zones.",
+      "A degree in Marketing, Communications or a related field is a plus."
     ],
     whyJoin: [
-      "Autonomy to shape a growing brand’s digital future.",
-      "Impact-driven role with direct business influence.",
-      "Collaborative culture focused on excellence and innovation."
+      "Run real social media accounts for an established US commercial painting company.",
+      "See your work published every week and build a strong portfolio.",
+      "A supportive, remote-friendly team that values quality and consistency."
     ],
     durationAndReporting: {
       duration: "Ongoing engagement with monthly reviews",
       reportingTo: "Directly to the Operations Manager and the CEO",
-      collaboratesWith: "Project Managers, Estimators, and Site Teams"
+      collaboratesWith: "Project teams, who supply project photos and videos"
     },
     howToApply: {
       email: "Info@lydiapainting.com",
-      subject: "Remote Social Media Manager Application",
+      subject: "Remote Social Media Assistant Application",
       requirements: [
         "Resume / CV",
         "Cover letter",
-        "Portfolio or links to past work / campaigns"
+        "Portfolio or links to accounts / content you have managed"
       ],
       deadline: "Rolling applications (early submission encouraged)"
     },
