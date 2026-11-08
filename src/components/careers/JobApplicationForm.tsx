@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CheckCircle2, Loader2, Send, Mail, Copy, Check, FileText, ExternalLink } from "lucide-react";
 import { JobPosition } from "@/data/careers";
 import { submitForm } from "@/lib/submitForm";
+import FormGuard from "@/components/ui/FormGuard";
 
 interface JobApplicationFormProps {
   job: JobPosition;
@@ -44,7 +45,7 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await submitForm("job-application", formData);
+      await submitForm("job-application", formData, e.currentTarget as HTMLFormElement);
       setIsSubmitted(true);
       setFormData({
         name: "",
@@ -177,6 +178,7 @@ export default function JobApplicationForm({ job }: JobApplicationFormProps) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+                <FormGuard />
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name *</label>
               <input

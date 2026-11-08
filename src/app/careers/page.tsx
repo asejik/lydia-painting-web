@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { openPositions } from "@/data/careers";
 import { submitForm } from "@/lib/submitForm";
+import FormGuard from "@/components/ui/FormGuard";
 
 export default function CareersPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +38,7 @@ export default function CareersPage() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await submitForm("careers", formData);
+      await submitForm("careers", formData, e.currentTarget as HTMLFormElement);
       setIsSubmitted(true);
       setFormData({
         name: "",
@@ -205,6 +206,7 @@ export default function CareersPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                <FormGuard />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name *</label>

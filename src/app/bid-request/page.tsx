@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Send, Loader2, CheckCircle, FileText } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import { submitForm } from "@/lib/submitForm";
+import FormGuard from "@/components/ui/FormGuard";
 
 export default function BidRequestPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,7 +29,7 @@ export default function BidRequestPage() {
     setIsSubmitting(true);
 
     try {
-      await submitForm("bid-request", formData);
+      await submitForm("bid-request", formData, e.currentTarget as HTMLFormElement);
       setIsSubmitted(true);
       setFormData({ companyName: "", contactName: "", contactEmail: "", phone: "", projectName: "", projectAddress: "", projectType: "", estimatedStartDate: "", planLink: "", additionalDetails: "" });
     } catch (error) {
@@ -63,6 +64,7 @@ export default function BidRequestPage() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-8">
+                <FormGuard />
 
                   {/* Company & Contact Info */}
                   <div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { submitForm } from "@/lib/submitForm";
+import FormGuard from "@/components/ui/FormGuard";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +30,7 @@ export default function Contact() {
     setError("");
 
     try {
-      await submitForm("contact", formData);
+      await submitForm("contact", formData, e.currentTarget);
 
       setIsSuccess(true);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", service: "", message: "" });
@@ -119,6 +120,7 @@ export default function Contact() {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                <FormGuard />
                 {error && (
                   <div className="p-4 bg-red-50 border border-red-100 rounded-lg flex items-start">
                     <AlertCircle className="w-5 h-5 text-red-500 mr-2 shrink-0 mt-0.5" />
